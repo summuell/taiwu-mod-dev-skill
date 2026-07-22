@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Win32;
@@ -31,7 +31,7 @@ var sharedDll = Path.Combine(backendDir, "GameData.Shared.dll");
 var streamingAssets = Path.Combine(gameDir, "The Scroll of Taiwu_Data", "StreamingAssets");
 if (!File.Exists(sharedDll)) throw new FileNotFoundException($"找不到 {sharedDll}");
 
-// buildId 提前读取：默认输出目录用它作子目录（与百晓册知识库 knowledge-base/<buildid>/ 同源锚点）
+// buildId 提前读取：默认输出目录用它作子目录（与百晓册知识库 E:\taiwu_decompiled/<buildid>/knowledge-base/ 同源锚点）
 var buildId = ReadBuildId(gameDir) ?? "unknown";
 outDir ??= Path.Combine(Directory.GetCurrentDirectory(), "config", buildId);
 Directory.CreateDirectory(outDir);

@@ -1,4 +1,4 @@
-# 太吾绘卷配置离线提取器（config-extractor）
+﻿# 太吾绘卷配置离线提取器（config-extractor）
 
 **纯静态、不启动游戏**地从 `GameData.Shared.dll` 提取太吾绘卷的数值配置，导出为带字段名的 JSON。
 
@@ -16,11 +16,12 @@
 ## 用法
 
 ```bash
-cd <工作区根>  # 在用户的 mod 工程根目录下执行；产物默认输出到当前目录的 config/<buildid>/
+# 输出到 E:\taiwu_decompiled 缓存目录（推荐，与反编译源码集中存放）
+dotnet run --project <skill>/config-extractor -c Release -- -o "E:\taiwu_decompiled"
+# → E:\taiwu_decompiled/<buildid>/config/<表名>.json × N + _manifest.json
 
-# 提取全部配置表（默认行为，也可显式 --all）
+# 如不指定 -o，产物默认输出到当前目录的 config/<buildid>/
 dotnet run --project <skill>/config-extractor -c Release
-# → config/<buildid>/<表名>.json × N + config/<buildid>/_manifest.json（汇总清单，N = 当前游戏的配置表数）
 
 # 单表提取（带详细校验输出）
 dotnet run --project <skill>/config-extractor -c Release -- -t CharacterFeature
@@ -47,7 +48,7 @@ dotnet run --project <skill>/config-extractor -c Release -- -l CNH              
 
 ## 输出示例
 
-每张表输出到 `config/<buildid>/<表名>.json`，结构统一（带元信息头 + records 数组）：
+每张表输出到 `E:\taiwu_decompiled/<buildid>/config/<表名>.json`（未指定 `-o` 时在 `config/<buildid>/<表名>.json`（不推荐）），结构统一（带元信息头 + records 数组）：
 ```json
 {
   "$table": "CharacterFeature",
@@ -120,7 +121,7 @@ config-extractor/
 ├── FieldMapper.cs             字段名 ↔ ctor 参数位置映射
 ├── LocalizationResolver.cs    解析 Language_CN/*.txt 和 ConfigRefNameMapping/*.ref.txt
 ├── README.md
-└── config/                    提取产物（gitignore，默认在工作区根生成）
+└── config/                    提取产物（gitignore，默认在当前目录生成；推荐用 -o 输出到 E:\taiwu_decompiled）
 ```
 
 ## 下一步（可选优化）

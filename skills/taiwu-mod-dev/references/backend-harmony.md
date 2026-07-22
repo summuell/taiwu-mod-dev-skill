@@ -1,8 +1,8 @@
-# 后端 Harmony Patch 实战
+﻿# 后端 Harmony Patch 实战
 
 后端逻辑（数值、规则、战斗、AI、事件）全在后端主程序集 **`Backend\GameData.dll`**（含 `TaiwuDomain`、`DomainManager`）。改它用 HarmonyLib。
 
-> 本 skill 阶段二已说明如何反编译出可读源码（反编译目标是 `Backend\GameData.dll`，**不是** `Managed\GameData.Shared.dll`——后者是共享类型库，不含域逻辑）。下文"反编译源码""在源码里 Grep"均指工作区 `decompiled/<buildid>/` 下反编译 `Backend\GameData.dll` 得到的产物。
+> 本 skill 阶段二已说明如何反编译出可读源码（反编译目标是 `Backend\GameData.dll`，**不是** `Managed\GameData.Shared.dll`——后者是共享类型库，不含域逻辑）。下文"反编译源码""在源码里 Grep"均指`E:\taiwu_decompiled\<buildid>/` 下反编译 `Backend\GameData.dll` 得到的产物。
 
 ## 前置：先读源码定位目标
 

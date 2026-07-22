@@ -1,4 +1,4 @@
-// 《太吾百晓册》知识库构建器（.NET 版）
+﻿// 《太吾百晓册》知识库构建器（.NET 版）
 //
 // 把游戏自带的《太吾百晓册》（官方百科）中文资源转成对 AI 友好的 markdown 知识库。
 // 供 mod 开发时让 AI 理解游戏机制与数值（与反编译源码互补：本库答「机制/数值是什么」，
@@ -54,7 +54,7 @@ internal static class Program
             }
         }
 
-        // ---- 1. buildid（与反编译目录 decompiled/<buildid>/ 同源锚点）----
+        // ---- 1. buildid（与反编译缓存目录 E:\taiwu_decompiled/<buildid>/ 同源锚点）----
         string buildId = ReadBuildId(gameDir);
         if (buildId == "unknown")
         {
@@ -322,7 +322,7 @@ internal static class Program
             sb.AppendLine("1. **先读本 INDEX** 定向：确定要查的主题属于哪一层、哪个文件。");
             sb.AppendLine("2. **机制理解** → 读 encyclopedia/ 下对应章节 markdown（整章通读最有效）。");
             sb.AppendLine("3. **具体数值/掉率/门派数据** → 读 data-tables/ 下对应表（表头已 JOIN 进去）。");
-            sb.AppendLine("4. 定位代码实现时再转向反编译源码（decompiled/<buildid>/）。").AppendLine();
+            sb.AppendLine("4. 定位代码实现时再转向反编译源码（E:\taiwu_decompiled/<buildid>/）。").AppendLine();
             sb.AppendLine($"## ① 百晓册正文（机制解释，{chapterOrder.Count} 章）").AppendLine();
             sb.AppendLine("| 章节 | 文件 |");
             sb.AppendLine("|---|---|");
@@ -447,7 +447,7 @@ internal static class Program
         return null;
     }
 
-    // 读 Steam buildid 作为版本指纹（与 decompiled/<buildid>/ 同源锚点）
+    // 读 Steam buildid 作为版本指纹（与 E:\taiwu_decompiled/<buildid>/ 同源锚点）
     private static string ReadBuildId(string gameDir)
     {
         var candidates = new List<string>

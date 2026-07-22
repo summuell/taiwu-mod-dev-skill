@@ -1,4 +1,4 @@
-# 游戏机制知识库（百晓册）
+﻿# 游戏机制知识库（百晓册）
 
 把游戏内的《太吾百晓册》（官方百科）转成 markdown 知识库，让 AI 在写 mod 时**理解游戏机制和数值是怎么设计的**——这是反编译源码回答不了的问题。
 
@@ -18,18 +18,16 @@
 
 ## 怎么构建（一次性，每次游戏大版本更新后重建）
 
-知识库是按**当前安装的游戏 buildid**生成的本地产物，落在**用户工作区根目录**（mod 工程根）的 `knowledge-base/<buildid>/`，与 `decompiled/<buildid>/` 同源锚点、不随仓库提交（见 `.gitignore`）。先确保阶段一已完成（能定位到游戏目录）。
+知识库是按**当前安装的游戏 buildid**生成的本地产物，集中缓存在 `E:\taiwu_decompiled\<buildid>/knowledge-base/`，与 `E:\taiwu_decompiled/<buildid>/` 同源锚点、不随仓库提交（见 `.gitignore`）。先确保阶段一已完成（能定位到游戏目录）。
 
 构建器是 skill 自带的零 NuGet 依赖 .NET 控制台工程，用 `dotnet run` 现场编译运行（需 .NET 8+ SDK，阶段一已要求）。
 
-> ⚠️ **路径要点**：`--project` 必须指向 **skill 自身目录**（即本 SKILL.md / references 所在目录）下的 `scripts/dotnet-build-kb`，且用**绝对路径**。因为 `scripts/` 在 skill 安装目录里（如 `.agents/skills/taiwu-mod-dev/scripts/`），**不在用户的工作目录下**——写相对路径 `scripts/...` 会找不到工程。知识库则默认输出到**当前工作目录**（用户的工作区根），与 `decompiled/` 放一起。
+> ⚠️ **路径要点**：`--project` 必须指向 **skill 自身目录**（即本 SKILL.md / references 所在目录）下的 `scripts/dotnet-build-kb`，且用**绝对路径**。因为 `scripts/` 在 skill 安装目录里（如 `.agents/skills/taiwu-mod-dev/scripts/`），**不在用户的工作目录下**——写相对路径 `scripts/...` 会找不到工程。知识库通过 `-o` 输出到 `E:\taiwu_decompiled`，与反编译源码集中存放。
 
 ```bash
-# 在用户的工作区根目录（mod 工程根，即希望生成 knowledge-base/ 的地方）执行。
+# 在任意目录执行（-o 指定输出到 E:\taiwu_decompiled）。
 # 把 <skill> 替换成本 SKILL.md 所在目录的绝对路径。
-dotnet run --project "<skill>/scripts/dotnet-build-kb" --configuration Release
-# 例：skill 装在 D:/my-mod/.agents/skills/taiwu-mod-dev/ 时
-dotnet run --project "D:/my-mod/.agents/skills/taiwu-mod-dev/scripts/dotnet-build-kb" -c Release
+dotnet run --project "<skill>/scripts/dotnet-build-kb" -c Release -- -o "E:\taiwu_decompiled"
 # 游戏装在非标准路径时显式指定 -g：
 dotnet run --project "<skill>/scripts/dotnet-build-kb" -c Release -- -g "D:\...\The Scroll Of Taiwu"
 # 游戏更新后强制重建（-f）：
@@ -40,7 +38,7 @@ dotnet run --project "<skill>/scripts/dotnet-build-kb" -c Release -- -o "D:\my-m
 
 - 纯 .NET BCL、零 NuGet 依赖，首次几秒编译、之后增量；约 0.8s 生成。
 - 编译产物 `scripts/dotnet-build-kb/bin/`、`obj/` 在 skill 安装目录里生成，已在 `.gitignore`，不入库。
-- 产物落在工作区根的 `knowledge-base/<buildid>/`。**用 buildid 作目录名和版本指纹，与 `decompiled/<buildid>/` 完全一致**——同源同判定。
+- 产物在 `E:\taiwu_decompiled\<buildid>/knowledge-base/`。**用 buildid 作目录名和版本指纹，与反编译源码在同一缓存目录中**——同源同判定。
 - 幂等：`_meta.json` 记录了生成时的 buildid；不带 `-f` 再跑，若 buildid 匹配则跳过（"已是最新"）。游戏更新后 buildid 变，再跑会自动重建到新 buildid 目录，旧的保留可对照。
 
 > 知识库和反编译源码**用同一个 buildid 锚点**判断过期——两者要么都是最新、要么都需要重建，保持一致。
@@ -50,7 +48,7 @@ dotnet run --project "<skill>/scripts/dotnet-build-kb" -c Release -- -o "D:\my-m
 **第一步永远是先读 INDEX 定向**，不要凭猜测直接 grep：
 
 ```
-<工作区>/knowledge-base/<buildid>/INDEX.md
+E:\taiwu_decompiled\<buildid>/knowledge-base/INDEX.md
 ```
 
 INDEX 里有两层清单（章节树 / 数据表清单含列数行数）+ 章节跳转关系。读完 INDEX 你就知道要查的主题在哪个文件，再深读那一个文件。
@@ -89,5 +87,5 @@ INDEX 里有两层清单（章节树 / 数据表清单含列数行数）+ 章节
 ## 维护
 
 - 知识库是产物，**不手改**——要更新就重跑构建器（读最新游戏资源重新生成）。
-- 游戏更新后：先反编译校验 buildid（阶段二），buildid 变了就重建知识库（`-f` 或删 `knowledge-base/<旧buildid>/`）。
+- 游戏更新后：先反编译校验 buildid（阶段二），buildid 变了就重建知识库（`-f` 或删 `E:\taiwu_decompiled/<旧buildid>/knowledge-base/`）。
 - 构建器源码在仓库 `scripts/dotnet-build-kb/`（`Program.cs` + `BuildKnowledgeBase.csproj`），随仓库提交、可读可改；若游戏改了百晓册数据格式（新增列/改转义），改源码对应段落再用 `dotnet run` 重跑。

@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -17,7 +17,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Fixed
 
-* Fixed an installation issue where `npx skills add gruiyuan/taiwu-mod-dev-skill` could install only `SKILL.md` while omitting required supporting directories such as `references/` and `scripts/`.
+* Fixed an installation issue where `npx skills add summuell/taiwu-mod-dev-skill` could install only `SKILL.md` while omitting required supporting directories such as `references/` and `scripts/`.
 * Ensured the skill's supporting references and scripts are preserved during installation.
 
 ### Notes
@@ -29,7 +29,7 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Added
 
-* The skill can now ground itself in the game's own descriptions of how things work: it ships a builder that turns the in-game encyclopedia ("百晓册") into a queryable markdown knowledge base, so the agent understands game mechanics before writing patches rather than guessing from code alone.
+* The skill can now ground itself in the game's own descriptions of how things work: it ships a builder that turns the in-game encyclopedia ("鐧炬檽鍐?) into a queryable markdown knowledge base, so the agent understands game mechanics before writing patches rather than guessing from code alone.
 * The skill can now look up the real numbers behind any game entity: it ships a builder that extracts all config tables (features, weapons, combat skills, etc.) from the game assembly, giving the agent authoritative current values to tune against in value-editing mods.
 
 ## 0.1.0
@@ -44,5 +44,5 @@ Release notes are generated from this file. Keep changelog entries in English.
 ### Notes
 
 * This is the first public baseline version.
-* The project is primarily documentation and workflow guidance for building independent C# mods for 《太吾绘卷：天幕心帷》.
+* The project is primarily documentation and workflow guidance for building independent C# mods for 銆婂お鍚剧粯鍗凤細澶╁箷蹇冨阜銆?
 * No binary release assets are provided; GitHub automatically provides source archives for the release tag.

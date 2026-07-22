@@ -1,4 +1,4 @@
-# 独立 Mod 工程搭建
+﻿# 独立 Mod 工程搭建
 
 如何从零建一个能编译、能跑的独立 mod 工程。直接引用游戏目录里的真实 DLL。
 
@@ -28,6 +28,35 @@ MyMod/
 └── libs/                         ← 可选：mod 自己的第三方依赖
 ```
 
+
+## 工作区 .gitignore
+
+创建 mod 项目时，在工作区根生成 `.gitignore`，只跟踪必要文件：
+
+```
+# 保留：src/（源码）、mod/（最终 mod）、README.md
+decompiled/
+other/
+bin/
+obj/
+packages/
+*.nupkg
+*.user
+*.suo
+*.DotSettings
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+mod/Settings.Lua
+```
+
+> `src/` 和 `mod/` 和 `README.md` 入库，其余全部不入库。`mod/Settings.Lua` 由游戏运行时自动生成，也不入库。
 ## 关键决策：引用 DLL 的两种方式
 
 ### 先确定端侧对应的 DLL 目录
@@ -142,6 +171,11 @@ Copy-Item "$Backend\GameData.dll","$Backend\TaiwuModdingLib.dll","$Backend\0Harm
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
+  <!-- Release 编译后自动部署到游戏 Mod 目录，编译完直接开游戏就能用 -->
+  <Target Name="DeployToGameMod" AfterTargets="AfterBuild" Condition="'$(Configuration)'=='Release'">
+    <Exec Command="powershell -ExecutionPolicy Bypass -NoProfile -Command &quot;try { $$g=(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 838350').InstallLocation; $$d=Join-Path $$g 'Mod\$(AssemblyName)'; Remove-Item $$d -Recurse -ErrorAction SilentlyContinue; Copy-Item '$(MSBuildProjectDirectory)\..\..\mod\*' $$d -Recurse -Force; Write-Host '[Deploy] OK' } catch { Write-Host '[Deploy] skip' }&quot;" />
+  </Target>
+
 </Project>
 ```
 
@@ -157,12 +191,12 @@ Copy-Item "$Backend\GameData.dll","$Backend\TaiwuModdingLib.dll","$Backend\0Harm
 # 1. 编译（产物自动落到 mod/Plugins/）
 dotnet build src\MyMod.Backend\MyMod.Backend.csproj -c Release
 
-# 2. 复制 mod 目录到游戏
-$GameDir = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 838350').InstallLocation
-$Dest = Join-Path $GameDir 'Mod\MyMod'
-Copy-Item 'mod\*' $Dest -Recurse -Force
+# 2. 编译完成即自动部署到游戏 Mod 目录（csproj 内含 DeployToGameMod Target）
+#    Release 编译时自动触发：从注册表读游戏路径 → 删旧版 → 复制 mod/*
+#    编译完直接开游戏就能用。无需手动拷贝。
 ```
 
+> 如果 csproj 里包含了 `DeployToGameMod` Target（见上方最小 csproj 模板），Release 编译后会自动把 `mod/` 复制到游戏 Mod 目录。不想自动部署时用 `dotnet build -c Debug` 即可。
 部署后：
 ```
 <游戏>/Mod/MyMod/
