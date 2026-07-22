@@ -8,6 +8,8 @@
 
 ```
 <ModName>/
+├── .gitignore                 ← 只保留 src/、mod/、README.md 入库，其余全部过滤
+├── README.md                  ← 项目说明
 ├── mod/                       ← 最终 mod 文件，直接复制到游戏 Mod/ 即可使用
 │   ├── Config.Lua             ← mod 元信息与可调设置项
 │   ├── Settings.Lua           ← 玩家保存的设置（自动生成，不入库）
