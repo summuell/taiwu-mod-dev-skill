@@ -1,103 +1,118 @@
 ﻿<div align="center">
 
-# 澶惥缁樺嵎 Mod 寮€鍙?.skill
+# 太吾绘卷 Mod 开发.skill
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-Standard-green)](https://github.com/vercel-labs/skills)
 [![skills.sh](https://img.shields.io/badge/skills.sh-Compatible-blue)](https://skills.sh)
-[![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20ZCode-blueviolet)](#瀹夎)
+[![Multi-Runtime](https://img.shields.io/badge/Runtime-Claude%20Code%20·%20Codex%20·%20Cursor%20·%20ZCode-blueviolet)](#安装)
 
 <br>
 
-**涓恒€婂お鍚剧粯鍗凤細澶╁箷蹇冨阜銆嬶紙The Scroll of Taiwu锛孲team App 838350锛夊埗浣滅嫭绔?C# Mod 鐨勫叏娴佺▼ skill銆?*
+**为《太吾绘卷：天幕心帷》（The Scroll of Taiwu，Steam App 838350）制作独立 C# Mod 的全流程 skill。**
 
 <br>
 
-浠庣幆澧冩鏌ワ紙.NET SDK銆乮lspycmd銆佹父鎴忓畾浣嶏級銆佹寜闇€鍙嶇紪璇戞父鎴忕▼搴忛泦銆佺増鏈竴鑷存€ф牎楠岋紝
-鍒扮紪鍐欐彃浠跺叆鍙ｃ€佺敤 HarmonyLib 鎵撹ˉ涓併€佸畾涔?Config.Lua 璁剧疆椤广€佸墠鍚庣 RPC 閫氫俊锛?鍐嶅埌缂栬瘧閮ㄧ讲銆佺湅鏃ュ織璋冭瘯銆佸彂甯冨埌鍒涙剰宸ュ潑鍙婂悗缁増鏈淮鎶も€斺€?*瀹屾暣閾捐矾锛屼竴涓?skill 鎼炲畾**銆?
-杩樺唴缃?*娓告垙鏈哄埗鐭ヨ瘑搴?*锛氭妸娓告垙鍐呫€婂お鍚剧櫨鏅撳唽銆嬶紙瀹樻柟鐧剧锛夎浆鎴?markdown锛岃 AI 鍏堢悊瑙ｆ父鎴忔満鍒?鏁板€煎啀缁撳悎鍙嶇紪璇戞簮鐮佸畾浣嶅疄鐜帮紝patch 鍐欏緱鏇村噯銆?
+从环境检查（.NET SDK、ilspycmd、游戏定位）、全量反编译游戏程序集、版本一致性校验，
+到编写插件入口、用 HarmonyLib 打补丁、定义 Config.Lua 设置项、前后端 RPC 通信，
+再到编译部署、看日志调试、发布到创意工坊及后续版本维护——**完整链路，一个 skill 搞定**。
+还内置**游戏机制知识库**：把游戏内《太吾百晓册》（官方百科）转成 markdown，让 AI 先理解游戏机制/数值再结合反编译源码定位实现，patch 写得更准。
 
-[瀹夎](#瀹夎) 路 [杩欎釜 skill 鑳藉仛浠€涔圿(#杩欎釜-skill-鑳藉仛浠€涔? 路 [宸ヤ綔娴乚(#宸ヤ綔娴? 路 [璁捐瑕佺偣](#璁捐瑕佺偣)
+[安装](#安装) · [这个 skill 能做什么](#这个-skill-能做什么) · [工作流](#工作流) · [设计要点](#设计要点)
 
-
-> 本仓库改编自 [gruiyuan/taiwu-mod-dev-skill](https://github.com/gruiyuan/taiwu-mod-dev-skill)，在原版基础上调整了反编译缓存策略和工作区结构。感谢原作者的出色工作。
+> **本仓库改编自 [gruiyuan/taiwu-mod-dev-skill](https://github.com/gruiyuan/taiwu-mod-dev-skill)**，在原版基础上调整了反编译缓存策略和工作区结构。感谢原作者的出色工作。
 
 </div>
 
 ---
 
-## 瀹夎
+## 安装
 
-鏀寔涓夌鏂瑰紡锛屼换閫夊叾涓€銆?
-### 鏂瑰紡涓€锛氭妸鏈粨搴撻摼鎺ヨ创缁?AI Agent锛堟渶鐪佷簨锛?
-鐩存帴鎶婁笅闈㈣繖琛屽彂缁欎綘鐨?AI Agent锛圕laude Code / Codex / Cursor / ZCode 绛夋敮鎸?Agent Skills 鏍囧噯鐨勫鎴风锛夛細
+支持三种方式，任选其一。
+### 方式一：把本仓库链接贴给 AI Agent（最省事）
+直接把下面这行发给你的 AI Agent（Claude Code / Codex / Cursor / ZCode 等支持 Agent Skills 标准的客户端）：
 
 ```
-璇峰畨瑁呰繖涓?skill锛歨ttps://github.com/summuell/taiwu-mod-dev-skill
+请安装这个 skill：https://github.com/summuell/taiwu-mod-dev-skill
 ```
 
-Agent 浼氳嚜鍔ㄨ瘑鍒苟瀹夎锛屼箣鍚庝綘鐩存帴璇淬€屽府鎴戝仛涓お鍚剧殑 mod銆嶅嵆鍙Е鍙戙€?
-### 鏂瑰紡浜岋細鍛戒护瀹夎锛堟帹鑽愶級
+Agent 会自动识别并安装，之后你直接说"帮我做个太吾的 mod"即可触发。
+### 方式二：命令安装（推荐）
 
-浣跨敤 [vercel-labs/skills](https://github.com/vercel-labs/skills) 鐨?CLI 涓€閿畨瑁呫€?*鍦ㄤ綘鐨勫お鍚?mod 宸ョ▼鐩綍涓嬫墽琛?*鈥斺€旀湰 skill 鏄お鍚句笓鐢ㄣ€佷笉閫傚悎鏀惧叏灞€锛岄粯璁ゅ氨瑁呭埌褰撳墠椤圭洰锛?
+使用 [vercel-labs/skills](https://github.com/vercel-labs/skills) 的 CLI 一键安装。**在你的太吾 mod 工程目录下执行**——本 skill 是太吾专用、不适合放全局，默认就装到当前项目：
 ```bash
 npx skills add summuell/taiwu-mod-dev-skill
 ```
 
-> 璇ュ懡浠ら粯璁よ鍒?*褰撳墠椤圭洰鐨?* agent skills 鐩綍锛堥」鐩骇锛屼細闅忎粨搴撴彁浜ゅ叡浜級銆?*涓嶈鍔?`-g`/`--global`**鈥斺€旈偅鏄鍒板叏灞€鐢ㄦ埛鐩綍锛屼細璁╂墍鏈夐」鐩兘鍔犺浇杩欎釜澶惥涓撶敤 skill锛屾病鏈夊繀瑕併€?> 涔熷吋瀹?`npx skill add summuell/taiwu-mod-dev-skill` 鍐欐硶銆?
-### 鏂瑰紡涓夛細鎵嬪姩瀹夎
+> 该命令默认装到**当前项目的** agent skills 目录（项目级，会随仓库提交共享）。**不要加 `-g`/`--global`**——那是装到全局用户目录，会让所有项目都加载这个太吾专用 skill，没有必要。
+> 也兼容 `npx skill add summuell/taiwu-mod-dev-skill` 写法。
+### 方式三：手动安装
 
-鎶婃湰浠撳簱鐨?`SKILL.md` 鍜?`references/` 鐩綍澶嶅埗鍒颁綘鐨?Agent skills 鐩綍鍗冲彲锛?
+把本仓库的 `SKILL.md` 和 `references/` 目录复制到你的 Agent skills 目录即可：
 ```bash
 git clone https://github.com/summuell/taiwu-mod-dev-skill.git
 ```
 
-鐒跺悗鏍规嵁浣犵敤鐨?Agent锛屾斁鍒板搴斾綅缃紙浠婚€夊叾涓€锛夛細
+然后根据你用的 Agent，放到对应位置（任选其一）：
 
-鐒跺悗鍦ㄤ綘鐨勫お鍚?mod 宸ョ▼鏍圭洰褰曚笅锛屾寜鎵€鐢ㄧ殑 Agent 鏀惧埌瀵瑰簲椤圭洰绾х洰褰曪紙鏈?skill 涓嶅缓璁斁鍏ㄥ眬锛夛細
+然后在你太吾 mod 工程根目录下，按所用的 Agent 放到对应项目级目录（本 skill 不建议放全局）：
 
-| Agent | 椤圭洰绾?skills 鐩綍 |
+| Agent | 项目级 skills 目录 |
 |---|---|
-| Claude Code | `<椤圭洰>/.claude/skills/taiwu-mod-dev/` |
-| Codex | `<椤圭洰>/.codex/skills/taiwu-mod-dev/` |
-| Cursor | `<椤圭洰>/.cursor/skills/taiwu-mod-dev/` |
-| OpenCode | `<椤圭洰>/.opencode/skills/taiwu-mod-dev/` |
-| ZCode | `<椤圭洰>/.agents/skills/taiwu-mod-dev/` |
+| Claude Code | `<项目>/.claude/skills/taiwu-mod-dev/` |
+| Codex | `<项目>/.codex/skills/taiwu-mod-dev/` |
+| Cursor | `<项目>/.cursor/skills/taiwu-mod-dev/` |
+| OpenCode | `<项目>/.opencode/skills/taiwu-mod-dev/` |
+| ZCode | `<项目>/.agents/skills/taiwu-mod-dev/` |
 
-> 鏈?skill 鏄お鍚句笓鐢ㄣ€佷笉閫傚悎鏀惧叏灞€锛堜細璁╂墍鏈夐」鐩兘鍔犺浇锛夈€傚悇 Agent 閮芥敮鎸侀」鐩骇瀹夎锛屾瘡涓敤鑷繁鐨勭偣鐩綍锛坄.claude` / `.codex` / `.cursor` / `.opencode` / ZCode 鐢?`.agents`锛夈€俙<椤圭洰>` 鎸囦綘鐨勫お鍚?mod 宸ョ▼鏍圭洰褰曘€?>
-> Cursor 娉ㄦ剰锛歚.cursor/skills-cursor/` 鏄?Cursor 鍐呯疆鍙鐩綍锛岀敤鎴?skill 鏀?`.cursor/skills/`锛堟棤 `-cursor` 鍚庣紑锛夈€?
-鐩綍缁撴瀯搴斾负锛?
+> 本 skill 是太吾专用、不适合放全局（会让所有项目都加载）。各 Agent 都支持项目级安装，每个用自己的点目录（`.claude` / `.codex` / `.cursor` / `.opencode` / ZCode 用 `.agents`）。`<项目>` 指你的太吾 mod 工程根目录。
+> Cursor 注意：`.cursor/skills-cursor/` 是 Cursor 内置只读目录，用户 skill 放 `.cursor/skills/`（无 `-cursor` 后缀）。
+目录结构应为：
 ```
 taiwu-mod-dev/
-鈹溾攢鈹€ SKILL.md
-鈹溾攢鈹€ scripts/
-鈹?  鈹溾攢鈹€ dotnet-build-kb/            # 鐢熸垚銆婂お鍚剧櫨鏅撳唽銆嬫満鍒剁煡璇嗗簱鐨?.NET 宸ョ▼锛坉otnet run锛?鈹?  鈹斺攢鈹€ config-extractor/           # 浠庢父鎴?dll 绂荤嚎鎻愬彇鍏ㄩ儴閰嶇疆鏁板€肩殑 .NET 宸ョ▼锛圡ono.Cecil锛?鈹斺攢鈹€ references/
-    鈹溾攢鈹€ backend-harmony.md
-    鈹溾攢鈹€ config-lua-and-settings.md
-    鈹溾攢鈹€ frontend-backend-rpc.md
-    鈹溾攢鈹€ frontend-notes.md
-    鈹溾攢鈹€ game-config.md             # 娓告垙閰嶇疆鏁板€硷紙config-extractor锛夌殑鏋勫缓涓庝娇鐢?    鈹溾攢鈹€ game-knowledge-base.md     # 娓告垙鏈哄埗鐭ヨ瘑搴擄紙鐧炬檽鍐岋級鐨勬瀯寤轰笌浣跨敤
-    鈹溾攢鈹€ project-setup.md
-    鈹斺攢鈹€ publishing.md
+├── SKILL.md
+├── scripts/
+│   ├── dotnet-build-kb/            # 生成《太吾百晓册》机制知识库的 .NET 工程（dotnet run）
+│   └── config-extractor/           # 从游戏 dll 离线提取全部配置数值的 .NET 工程（Mono.Cecil）
+└── references/
+    ├── backend-harmony.md
+    ├── config-lua-and-settings.md
+    ├── frontend-backend-rpc.md
+    ├── frontend-notes.md
+    ├── game-config.md             # 游戏配置数值（config-extractor）的构建与使用
+    ├── game-knowledge-base.md     # 游戏机制知识库（百晓册）的构建与使用
+    ├── project-setup.md
+    └── publishing.md
 ```
 
 ---
 
-## 杩欎釜 skill 鑳藉仛浠€涔?
-褰撲綘璇村嚭涓嬮潰杩欎簺锛宻kill 浼氳嚜鍔ㄦ帴绠★細
+## 这个 skill 能做什么
+当你说出下面这些，skill 会自动接管：
 
-- 銆屾垜鎯冲仛涓澶惥鍏嶇柅涓瘨鐨?mod銆?- 銆屽府鎴戝姞涓墿鍝?/ 鏀规垬鏂椾激瀹炽€?- 銆屾垜鐨?mod 鍔犺浇涓嶄簡 / Harmony patch 涓嶇敓鏁堛€?- 銆屾€庝箞鍙嶇紪璇戝お鍚剧湅鐪嬫煇涓柟娉曠殑绛惧悕銆?- 銆屾€庝箞鏇存柊宸插彂甯冪殑 mod銆?- 銆屾父鎴忔洿鏂颁簡鎴戠殑 mod 杩樿兘鐢ㄥ悧銆?- 銆屽府鎴戝仛涓墠鍚庣閫氫俊鐨?mod銆?- 銆岃繖涓父鎴忔満鍒舵槸鎬庝箞璁捐鐨勶紵鏌愰」鏁板€兼槸澶氬皯锛熴€?
-## 宸ヤ綔娴?
-skill 鎶?mod 寮€鍙戠粍缁囨垚鍥涗釜闃舵锛屾瘡娆′細璇濇寜闇€鎺ㄨ繘锛?
-1. **鍓嶇疆妫€鏌?* 鈥?.NET 8+ 鐜銆乮lspycmd 鐗堟湰鍖归厤銆佷粠娉ㄥ唽琛ㄥ畾浣嶆父鎴忓畨瑁呯洰褰曘€?2. **鍙嶇紪璇戝氨缁?* 鈥?鎸?Steam buildid 鍋氱増鏈竴鑷存€ф牎楠岋紝鎸夐渶鍙嶇紪璇戝墠绔?`Assembly-CSharp.dll` / 鍚庣 `GameData.dll` 鍒板伐浣滃尯銆傦紙鍙€?鎺ㄨ崘锛氬悓姝ョ敓鎴愩€婂お鍚剧櫨鏅撳唽銆嬫満鍒剁煡璇嗗簱銆傦級
-3. **寮€鍙?* 鈥?鎻掍欢鍏ュ彛锛坄TaiwuRemakePlugin`锛夈€丠armony patch銆丆onfig.Lua 璁剧疆椤广€佸墠鍚庣 RPC锛岀紪璇戦儴缃茬湅鏃ュ織銆?4. **鍙戝竷涓庣淮鎶?* 鈥?瀹屽杽 Config.Lua锛堜氦浜掓敹闆嗕綔鑰?鐗堟湰绛変俊鎭級銆佽嚜妫€銆佹父鎴忓唴涓婁紶鍒涙剰宸ュ潑锛屼互鍙婄増鏈洿鏂般€侀€傞厤娓告垙鏂扮増鏈€佸洖婊氥€?
-## 璁捐瑕佺偣
+- 「我想做个让太吾免疫中毒的 mod」
+- 「帮我加个物品 / 改战斗伤害」
+- 「我的 mod 加载不了 / Harmony patch 不生效」
+- 「怎么反编译太吾看看某个方法的签名」
+- 「怎么更新已发布的 mod」
+- 「游戏更新了我的 mod 还能用吗」
+- 「帮我做个前后端通信的 mod」
+- 「这个游戏机制是怎么设计的？某项数值是多少？」
+## 工作流
+skill 把 mod 开发组织成四个阶段，每次会话按需推进：
+1. **前置检查** → .NET 8+ 环境、ilspycmd 版本匹配、从注册表定位游戏安装目录。
+2. **反编译就绪** → 按 Steam buildid 校验，全量反编译并缓存到 `E:\taiwu_decompiled\`（前端/后端/共享类型/知识库/配置一次完成），所有 mod 项目复用。（可选，推荐：同步生成《太吾百晓册》机制知识库。）
+3. **开发** → 插件入口（`TaiwuRemakePlugin`）、Harmony patch、Config.Lua 设置项、前后端 RPC，编译部署看日志。
+4. **发布与维护** → 完善 Config.Lua（交互收集作者/版本等信息）、自检、游戏内上传创意工坊，以及版本更新、适配游戏新版本、回滚。
+## 设计要点
 
-- **婧愮爜璇汇€丏LL 寮曠敤鍒嗗紑** 鈥?鍙嶇紪璇戜骇鐗╁彧璇伙紱缂栬瘧寮曠敤娓告垙鐩綍鐨勭湡瀹?DLL锛屼笖 `<Private>false</Private>` 闃茬被鍨嬭韩浠藉啿绐併€?- **鍓嶅悗绔洰褰曞埆娣?* 鈥?鍓嶇 `Managed\Assembly-CSharp.dll`銆佸悗绔?`Backend\GameData.dll`锛涘悗绔伐绋?`net8.0`銆佸墠绔伐绋?`netstandard2.1`銆?- **鐗堟湰涓嶉潬鐚?* 鈥?娓告垙鐗堟湰鍙蜂粠鍚姩鍦烘櫙 `level0` 绂荤嚎鎻愬彇锛堟棤闇€鍚姩娓告垙锛夛紱Steam `buildid` 鍒ゆ柇鍙嶇紪璇戞簮鐮佹槸鍚﹁繃鏈熴€?- **浼樺厛 public銆佷紭鍏堟敼閰嶇疆** 鈥?鑳芥敼 lua 閰嶇疆/浜嬩欢鑴氭湰灏卞埆涓?Harmony锛岃兘 patch public 灏卞埆纰?internal銆?
-## 閫傜敤鐗堟湰
+- **源码读、DLL 引用分开** — 反编译产物只读；编译引用游戏目录的真实 DLL，且 `<Private>false</Private>` 防止类型身份冲突。
+- **前后端目录别混** — 前端 `Managed\Assembly-CSharp.dll`、后端 `Backend\GameData.dll`；后端工程 `net8.0`、前端工程 `netstandard2.1`。
+- **版本不靠猜** — 游戏版本号从启动场景 `level0` 离线提取（无需启动游戏）；Steam `buildid` 判断反编译源码是否过期。
+- **优先 public、优先改配置** — 能改 lua 配置/事件脚本就别上 Harmony，能 patch public 就别碰 internal。
+## 适用版本
 
-闈㈠悜褰撳墠銆婂お鍚剧粯鍗凤細澶╁箷蹇冨阜銆嬶紙鍚庣 .NET 8銆乁nity Mono 鍓嶇锛夈€傛父鎴忓ぇ鐗堟湰鏇存柊鍚庯紝鎸?skill 闃舵浜岀殑鐗堟湰涓€鑷存€ф牎楠岄噸鏂板弽缂栬瘧瀵归綈鍗冲彲銆?
+面向当前《太吾绘卷：天幕心帷》（后端 .NET 8、Unity Mono 前端）。游戏大版本更新后，按 skill 阶段二的版本一致性校验重新反编译对齐即可。
 ## License
 
 [MIT](LICENSE)
-
