@@ -35,7 +35,6 @@ MyMod/
 
 ```
 # 保留：src/（源码）、mod/（最终 mod）、README.md
-decompiled/
 other/
 bin/
 obj/

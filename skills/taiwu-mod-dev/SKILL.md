@@ -22,6 +22,19 @@ description: 用于为《太吾绘卷：天幕心帷》（The Scroll of Taiwu，
 
 > **理解游戏机制时，配合「游戏机制知识库」（阶段二可选，推荐）**：把游戏内《太吾百晓册》（官方百科）转成 markdown，让 AI 先理解机制/数值怎么设计，再结合反编译源码定位实现——patch 写得更准、少返工。见下方"阶段二"末的「游戏机制知识库」和 `references/game-knowledge-base.md`。
 
+
+
+> **开发步骤速览（严格按此顺序执行，不得跳过）**：
+> 1. 检查环境（阶段一）
+> **2. 检查反编译缓存 → 如缺失或过期必须立即全量重建（阶段二 2a-2c，必须执行，不可跳过，不可部分重建）**
+> **3. 基于知识库与最新源码定位目标方法（不得凭记忆或旧代码写 patch）**
+> 4. 创建 mod 工程：.gitignore + csproj（阶段三 3a-3b + project-setup.md）
+> 5. 写 Config.Lua + 插件入口（阶段三 3a-3c）
+> 6. 写 Harmony patch / RPC（backend-harmony.md / frontend-backend-rpc.md）
+> 7. `dotnet build -c Release` 自动编译部署到游戏目录
+> 8. 开游戏验证
+> 9. 完善 Config.Lua（发布前交互，阶段四 4a）
+> 10. 游戏内上传创意工坊（阶段四 4b-4c）
 ---
 
 ## 阶段一：前置检查（每次会话开始先确认）
@@ -174,9 +187,21 @@ E:\taiwu_decompiled\               ← 集中缓存根目录
    - **一致** → 跳过反编译，直接复用 `E:\taiwu_decompiled\<buildid>/` 下的全套文件。
    - **不一致** → 触发全量重建（一次性完成全部反编译 + 知识库 + 配置提取），见 2d。
 
-> **任何情况下**，只要用户提到"游戏更新了"，或在开发过程中发现 buildid 与 `decomp.json` 不一致，都应当**立即触发全量重建**，不要犹豫。
+> ⚠️ **强制要求**：只要出现以下任一情况，必须立即执行全量重建，不得跳过、不得部分重建、不得凭旧代码继续：
+> 1. 用户提到"游戏更新了"
+> 2. 发现 `decomp.json` 中的 buildid 与当前游戏不一致
+> 3. `E:\taiwu_decompiled\` 不存在
+> 4. `E:\taiwu_decompiled\<当前buildid>\` 目录不完整
 >
-> 反编译是**一次性全量制作**——前端（Assembly-CSharp）、后端（GameData）、共享类型库（GameData.Shared）、知识库、配置数值全部在同一周期完成。不要用到什么反编译什么。一次制作，所有会话、所有 mod 项目重复使用。
+> **全量重建范围（一次性全部完成）**：
+> - Assembly-CSharp（前端源码）
+> - GameData（后端源码）
+> - GameData.Shared（共享类型库）
+> - knowledge-base（百晓册知识库）
+> - config（配置数值）
+>
+> **铁律**：不反编译完不允许写任何 patch。反编译缓存是后续所有开发的基础，必须在最早阶段确保最新。
+> **一次制作，所有会话、所有 mod 项目重复使用**。
 
 **额外校验**：复用前确认 `E:\taiwu_decompiled\<buildid>\GameData\` 里能找到核心类（如 `grep "class TaiwuDomain"` 命中）。若为空，说明之前反编译的目标错了（误用了 `GameData.Shared.dll`），需重建。
 ### 2d. 反编译命令
@@ -230,7 +255,7 @@ $decompJson | Set-Content -Encoding UTF8 "$CacheRoot\decomp.json"
 - 反编译耗时几分钟，进度会刷屏，正常。
 ### 2e. 阅读源码的姿势
 
-把它们当源码读，不要当二进制猜——类名、方法名、参数签名都完整：
+**源码统一在 `E:\taiwu_decompiled\<buildid>/` 下阅读，不要在项目工作区中存放或修改反编译产物。**把它们当源码读，不要当二进制猜——类名、方法名、参数签名都完整：
 - **前端**（Unity 侧）：UI、渲染、`FrameWork.ModSystem`（Mod 加载与设置项）、`ModManager.cs`（游戏自己的 Mod 加载器）、`Game.Views.*`。
 - **后端**：核心逻辑全在这，按 Domain 拆分：`GameData.Domains.Character`、`.Combat`、`.Item`、`.Map`、`.Organization`、`.TaiwuEvent` 等。
 - 用 Grep 精确定位方法签名，记下 `类名.方法名(参数类型列表)`——Harmony patch 必须精确匹配。
@@ -245,10 +270,10 @@ $decompJson | Set-Content -Encoding UTF8 "$CacheRoot\decomp.json"
 **反编译命令**（和反编译游戏 dll 一样，指向 mod 的 dll）：
 
 ```bash
-# mod 的 dll 放到工作区 decompiled/mods/<ModName>/ 下
+# mod 的 dll 放到 other/othermod/<ModName>/src/ 下
 $ModDir = "<mod 目录>"
-ilspycmd -p -o ".\decompiled\mods\<ModName>\Backend"  "$ModDir\Plugins\<后端dll>.dll"
-ilspycmd -p -o ".\decompiled\mods\<ModName>\Frontend" "$ModDir\Plugins\<前端dll>.dll"
+ilspycmd -p -o ".\other\othermod\<ModName>\src\Backend"  "$ModDir\Plugins\<后端dll>.dll"
+ilspycmd -p -o ".\other\othermod\<ModName>\src\Frontend" "$ModDir\Plugins\<前端dll>.dll"
 ```
 
 **优先挑带 `.pdb` 的 mod**——调试符号保留原始变量名，反编译质量远高于纯 dll（能看到真实命名而非 `num`/`val`）。判断方法：mod 的 `Plugins\` 目录下有同名 `.pdb` 文件。
@@ -333,7 +358,6 @@ public sealed class BackendPlugin : TaiwuRemakePlugin
 # 只保留：src/（源码）、mod/（最终 mod）、README.md
 # 其余全部过滤
 
-decompiled/
 other/
 bin/
 obj/

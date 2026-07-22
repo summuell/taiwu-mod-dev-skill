@@ -21,13 +21,13 @@
 │   │   ├── BackendPlugin.cs   ← 插件入口（TaiwuRemakePlugin）
 │   │   └── Patches/           ← Harmony patch 文件
 │   └── ModName.Frontend/      ← 前端 mod（可选）
-├── decompiled/mods/<ModName>/ ← （可选）参考第三方 mod 时反编译产物
+├── other/othermod/<ModName>/src/ ← （可选）参考第三方 mod 时反编译代码放这里
 └── other/                     ← 中间产物、临时脚本、笔记等
 ```
 
 > `mod/` 目录是完整的可发布包，可直接复制到 `<游戏根目录>/Mod/<ModName>/` 使用。
 > `src/` 下的 `.cs` / `.csproj` 仅用于开发和编译，不进入最终发布包。
-> `decompiled/` 和 `other/` 建议加入 `.gitignore`。
+> other/othermod/ 及 other/ 建议加入 .gitignore。
 
 ---
 
