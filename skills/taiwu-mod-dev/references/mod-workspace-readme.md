@@ -1,4 +1,4 @@
-﻿# <ModName>
+# <ModName>
 
 <ModName> —— 为《太吾绘卷：天幕心阜》（The Scroll of Taiwu，Steam App 838350）制作的独立 C# Mod。
 

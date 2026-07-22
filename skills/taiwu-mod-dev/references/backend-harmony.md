@@ -1,4 +1,4 @@
-﻿# 后端 Harmony Patch 实战
+# 后端 Harmony Patch 实战
 
 后端逻辑（数值、规则、战斗、AI、事件）全在后端主程序集 **`Backend\GameData.dll`**（含 `TaiwuDomain`、`DomainManager`）。改它用 HarmonyLib。
 

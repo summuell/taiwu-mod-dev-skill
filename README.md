@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # 太吾绘卷 Mod 开发.skill
 

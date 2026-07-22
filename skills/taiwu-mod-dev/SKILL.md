@@ -1,4 +1,4 @@
-﻿---
+---
 name: taiwu-mod-dev
 description: 用于为《太吾绘卷：天幕心帷》（The Scroll of Taiwu，Steam App 838350）制作独立 C# Mod 的全流程 skill。覆盖从环境检查（.NET SDK、ilspycmd、游戏定位）、全量反编译游戏程序集、版本一致性校验、编写插件入口、用 HarmonyLib 打补丁、定义 Config.Lua 设置项、前后端 RPC 通信，到编译部署、看日志调试、发布到创意工坊及后续版本更新维护的完整链路。当用户提到太吾绘卷、The Scroll of Taiwu、taiwu mod、为太吾写 mod、改太吾游戏行为、Harmony patch 太吾、TaiwuRemakePlugin、反编译太吾、更新/发布太吾 mod、太吾游戏更新后 patch 失效/适配、太吾 mod 的 .NET 版本/TargetFramework 等任何相关场景时使用——即使用户没说"用这个 skill"。本 skill 不依赖任何特定工作目录。
 ---

@@ -1,4 +1,4 @@
-﻿# 游戏配置数值（config-extractor）
+# 游戏配置数值（config-extractor）
 
 从 `Backend\GameData.Shared.dll` 离线提取游戏**全部配置表的真实数值**——特性/武器/功法/盔甲等每个实体的完整属性（等级、属性加成、概率、消耗……）。这是做数值类 mod 时查「现状数值是多少」的权威来源。
 

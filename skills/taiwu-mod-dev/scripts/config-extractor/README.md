@@ -1,4 +1,4 @@
-﻿# 太吾绘卷配置离线提取器（config-extractor）
+# 太吾绘卷配置离线提取器（config-extractor）
 
 **纯静态、不启动游戏**地从 `GameData.Shared.dll` 提取太吾绘卷的数值配置，导出为带字段名的 JSON。
 
